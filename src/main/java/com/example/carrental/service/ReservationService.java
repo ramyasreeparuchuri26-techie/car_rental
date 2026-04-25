@@ -53,10 +53,13 @@ public class ReservationService {
             throw new RuntimeException("Reservation not found");
         }
 
-        double amount = calculatePrice(
-                request.getVehicleType(),
+        PricingStrategy strategy =
+                factory.getStrategy(request.getVehicleType());
+
+        double amount = strategy.calculatePrice(
                 request.getDays(),
-                request.getMilesPerDay()
+                request.getMilesPerDay(),
+                request.getLicenseYears()
         );
 
         existing.setVehicleType(request.getVehicleType());
